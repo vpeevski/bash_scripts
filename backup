@@ -1,0 +1,29 @@
+#!/bin/bash
+
+source msgUtil
+
+declare -r bindir="${HOME}/bin"
+declare -r outputlog="${bindir}/output_log"
+
+printHeader "Creating backups"
+
+# Default backup directory
+declare backupDir="${HOME}/Backup"
+while getopts "d:" opt; do
+   case $opt in
+   	d)
+		backupDir="${OPTARG}"
+		;;
+   esac
+done
+shift $(( OPTIND - 1 ))
+
+if [[ ! -d "${backupDir}" ]]; then
+   mkdir -p "${backupDir}"
+   printOut "Directory ${backupDir} didn't exist. It was created."
+fi   
+cp -r "$@" "${backupDir}"
+[[ $? -eq 0 ]]||exitErr "Backup failed" $?
+printSucc "${*} backed up to ${backupDir}"
+
+exit 0

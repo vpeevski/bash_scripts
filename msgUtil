@@ -1,0 +1,41 @@
+#!/bin/bash
+bold=$(tput bold)
+underline=$(tput sgr 0 1)
+reset=$(tput sgr0)
+
+purple=$(tput setaf 171)
+red=$(tput setaf 1)
+green=$(tput setaf 76)
+tan=$(tput setaf 3)
+blue=$(tput setaf 39)
+grey=$(tput setaf 247)
+
+printOut() {
+   printf "${blue}[$(date '+%Y-%m-%d %H:%M:%S')] %s${reset}\n" "${1}"
+}
+
+printSucc() {
+   printf "${green}[$(date '+%Y-%m-%d %H:%M:%S')] ✔ %s${reset}\n" "SUCCESS : ${1}"
+}
+
+printWarn() {
+   printf "${tan}[$(date '+%Y-%m-%d %H:%M:%S')] %s ${reset}\n" "WARNING: ${1}"
+}
+
+printErr() {
+   printf "${red}[$(date '+%Y-%m-%d %H:%M:%S')] ✖ %s${reset}\n" "ERROR: ${1}" >&2
+}
+
+printHeader() {
+   printf "${bold}${grey}==========  %s  ==========${reset}\n" "$@"
+}
+
+exitErr() {
+   printErr "${1}"
+   if [[ "${2}" ]]; then
+      printErr "Exit code: ${2}"
+      exit "${2}"
+   fi
+   printErr "Exit code: 1"
+   exit 1
+}
