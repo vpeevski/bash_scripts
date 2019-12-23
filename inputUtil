@@ -1,11 +1,19 @@
 #!/bin/bash
+source msgUtil
+
 isNumber() {
    export VAR=$1
-   python3 -c'import inputValidator, os; inputValidator.isNumberEx(os.environ["VAR"])'
+   python3 -c 'import inputValidator, os; inputValidator.isNumberEx(os.environ["VAR"])'
    return $?
 }
 
-if isNumber -1; then
+isValidEmail() {
+   export VAR=$1
+   python3 -c 'import inputValidator, os; inputValidator.isValidEmailEx(os.environ["VAR"])'
+   return $?
+}
+
+if isValidEmail "vassilpeevsky@gmail.com"; then
 	printSucc "Yes" 
 else
     printErr "No"
