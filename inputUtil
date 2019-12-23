@@ -1,0 +1,12 @@
+#!/bin/bash
+isNumber() {
+   export VAR=$1
+   python3 -c'import inputValidator, os; inputValidator.isNumberEx(os.environ["VAR"])'
+   return $?
+}
+
+if isNumber -1; then
+	printSucc "Yes" 
+else
+    printErr "No"
+fi
