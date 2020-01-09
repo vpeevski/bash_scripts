@@ -13,7 +13,7 @@ isValidEmail() {
    return $?
 }
 
-if isValidEmail "vassilpeevsky@gmail.com"; then
+if isValidEmail "vpeevski@discoverita.com"; then
 	printSucc "Yes" 
 else
     printErr "No"
