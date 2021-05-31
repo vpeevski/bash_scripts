@@ -40,6 +40,7 @@ exec &> >(tee -a "${outputlog}")
 
 # -r available -> delete script file if exists
 if [[ $doDeleteScript = true ]]; then
+   printHeader "DELETE SCRIPT EXECUTION STARTED: ${0} ${*}"
    if [[ -e ${scriptfullpath} && -f ${scriptfullpath} ]]; then 
       rm "${scriptfullpath}"
       if [[ ${?} =  0 ]]; then
