@@ -8,17 +8,20 @@ source msgUtil
 # Some Backup stuff
 declare backupDir="${HOME}/Backup"
 declare doBackup=false
+declare doDeleteScript=false
 
-while getopts "bd:" opt; do
+while getopts "rbd:" opt; do
    case $opt in
-   	b)
-		doBackup=true
-   		;;
-
-   	d)
-		backupDir="${OPTARG}"
-		doBackup=true
-		;;
+      b)
+		     doBackup=true
+      ;;
+   	  d)
+		     backupDir="${OPTARG}"
+		     doBackup=true
+		  ;;
+      r)
+         doDeleteScript=true
+      ;;
    esac
 done
 shift $(( OPTIND - 1 ))
@@ -34,6 +37,19 @@ declare -r editor="/usr/bin/vi"
 exec 3>&1
 exec 4>&2
 exec &> >(tee -a "${outputlog}")
+
+# -r available -> delete script file if exists
+if [[ $doDeleteScript = true ]]; then
+   if [[ -e ${scriptfullpath} && -f ${scriptfullpath} ]]; then 
+      rm "${scriptfullpath}"
+      if [[ ${?} =  0 ]]; then
+         printSucc "File ${scriptfullpath} deleted successfully: Exit code: ${?}"
+      fi
+      exit ${?}
+   else
+      exitErr "Please provide an existing file name to delete!"
+   fi
+fi
 
 printHeader "CREATE SCRIPT EXECUTION STARTED: ${0} ${*}"
 
